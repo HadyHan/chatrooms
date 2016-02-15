@@ -5,6 +5,7 @@ var path = require('path');
 var mime = require('mime');
 var cache = {};
 
+/*辅助函数*/
 //所请求的文件不存在时发送404错误
 function send404(response){
 	response.writeHead(404,{'Content-Type':'text/plain'});
@@ -26,13 +27,13 @@ function serveStatic(response, cache, absPath){
 		 sendFile(response, absPath, cache[absPath]);
 	}else{
 		//检查文件是否存在
-		fs.exists(absPath,function(err,data){
+		fs.exists(absPath, function(exists){
 			if(exists){
 				fs.readFile(absPath, function(err, data){
 					if(err){
 						send404(response);
 					}else{
-						cache[absPath] =  data;
+						cache[absPath]  =  data;
 						sendFile(response, absPath, cache[absPath]);
 					}
 				})
@@ -42,3 +43,23 @@ function serveStatic(response, cache, absPath){
 		})
 	}
 }
+
+
+/*HTTP服务器*/
+//创建HTTP服务器
+var server = http.createServer(function(request,response){
+	var filePath = false;
+	if(request.url   ==  '/'){
+		filePath = 'public/index.html';
+
+	}else{
+		filePath = 'public' +  request.url;
+	}
+	var absPath = './' + filePath;
+	serveStatic(response,cache,absPath);
+});
+
+//启动HTTP服务器
+server.listen(3000,function(){
+	console.log("Server listening on port 3000:http://127.0.0.1:3000/")
+});
