@@ -1,0 +1,26 @@
+.text-chat, .video-chat{
+    border: 1px solid #ddd;
+    margin-left: 5%;
+    margin-top: 50px;
+}
+
+.pane {
+    margin: 20px;
+    text-align: center;
+}
+
+.message {
+    text-align: left;
+}
+
+#media-list{
+    width: 100%;
+}
+
+#messages-container {
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid #dedede;
+    padding: 10px;
+    margin-bottom: 2px;
+}
